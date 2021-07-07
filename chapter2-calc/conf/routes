@@ -1,7 +1,12 @@
 # TODO: Implement the following routes for CalcController:
 #
 #  - a GET request to /add/<int>/to/<int>       should call CalcController.add
+GET     /add/:a/to/:b           controllers.CalcController.add(a: Int, b: Int)
 #  - a GET request to /and/<bool>/with/<bool>   should call CalcController.and
+GET     /and/:a/with/:b         controllers.CalcController.and(a: Boolean, b: Boolean)
 #  - a GET request to /concat/<str>/<str>/...   should call CalcController.concat
+GET     /concat/*args            controllers.CalcController.concat(args: String)
 #  - a GET request to /sort?num=<num>&num=<num> should call CalcController.sort
+GET     /sort                   controllers.CalcController.sort(num: List[Int])
 #  - a GET request to /howto/add/<int>/to/<int> should call CalcController.howToAdd
+GET     /howto/add/:a/to/:b     controllers.CalcController.howToAdd(a: Int, b: Int)
