@@ -1,5 +1,9 @@
 # TODO: Add routes as follows:
 #
 #  - /time        should call TimeController.time
-#  - /time/<zone> should call TimeController.timeIn(...)
+GET     /time           controllers.TimeController.time
 #  - /time/zones  should call TimeController.zones
+# This needs to before /time/:zone else it calls timein("zones")
+GET     /time/zones     controllers.TimeController.zones
+#  - /time/<zone> should call TimeController.timeIn(...)
+GET     /time/:zone     controllers.TimeController.timeIn(zone: String)
