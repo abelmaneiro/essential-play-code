@@ -1,6 +1,5 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
 
 object CsvController extends Controller with CsvHelpers {
@@ -32,8 +31,46 @@ object CsvController extends Controller with CsvHelpers {
   //
   //  - Look at the helper functions in `CsvHelpers`.
   //    They will do a lot of the heavy lifting for you.
-  def toCsv = ???
+  def toCsv: Action[AnyContent] = Action { request =>
+    fromDataRequest(request) orElse
+      fromTextTsvRequest(request) orElse
+      fromTextPlainRequest(request) getOrElse
+      failedResult(request)
+  }
+
+  def fromDataRequest(request: Request[AnyContent]): Option[Result] = {
+    request.body.asFormUrlEncoded.map(formDataToCsv).map(toCsvResult)
+  }
+
+  def fromTextTsvRequest(request: Request[AnyContent]): Option[Result] ={
+//    request.contentType match {
+//      case Some("text/tsv") => request.body.asRaw.map(rawBufferToCsv).map(toCsvResult)
+//      case _ => None
+//    }
+    request.contentType flatMap {
+      case "text/tsv" => request.body.asRaw map rawBufferToCsv map toCsvResult
+      case _          => None
+    }
+  }
+
+  def fromTextPlainRequest(request: Request[AnyContent]): Option[Result] ={
+    request.body.asText.map(tsvToCsv).map(toCsvResult)
+  }
+
+  def toCsvResult(csv: String): Result = {
+//    Ok(csv).as("text/csv")
+    Ok(csv).withHeaders("Content-Type" -> "text/csv")
+
+  }
+
+  def failedResult(request: Request[AnyContent]): Result = {
+    BadRequest(s"Error - Got ${request.contentType.getOrElse("[BLANK]")} " +
+      "but expected application/x-www-form-url-encoded, text/tsv, or text/plain")
+  }
+
 }
+
+
 
 trait CsvHelpers {
   def formDataToCsv(data: Map[String, Seq[String]]): String = {
@@ -52,7 +89,7 @@ trait CsvHelpers {
     headLine +: bodyLines mkString "\n"
   }
 
-  def tsvToCsv(str: String) =
+  def tsvToCsv(str: String): String =
     str.replaceAll("\t", ",")
 
   def rawBufferToCsv(buff: RawBuffer): String =
