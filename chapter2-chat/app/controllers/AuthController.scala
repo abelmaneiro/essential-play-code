@@ -1,9 +1,8 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
 
-object AuthController extends Controller {
+object AuthController extends Controller with ControllerHelpers {
   import services.AuthService
   import services.AuthServiceMessages._
 
@@ -14,7 +13,12 @@ object AuthController extends Controller {
   //
   // NOTE: We don't know how to create HTML yet,
   // so populate each response with a plain text message.
-  def login(username: Username, password: Password) = Action { request =>
-    ???
+  def login(username: Username, password: Password): Action[AnyContent] = Action {
+    AuthService.login(LoginRequest(username, password)) match {
+      //case LoginSuccess(sessionId) => Ok("Logged in").withCookies(Cookie("ChatAuth", sessionId))
+      case LoginSuccess(sessionId) => Ok("Logged in").withSessionCookie(sessionId )
+      case _: PasswordIncorrect    => BadRequest("User not found or password incorrect")
+      case _: UserNotFound         => BadRequest("User not found or password incorrect")
+    }
   }
 }
