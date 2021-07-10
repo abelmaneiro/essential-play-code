@@ -1,23 +1,22 @@
 package controllers
 
-import play.api._
+import models._
 import play.api.mvc._
 import play.twirl.api.Html
-import models._
 
 object TodoController extends Controller with TodoDataHelpers {
-  def index = Action { request =>
+  def index: Action[AnyContent] = Action {
     Ok(renderTodoList(todoList))
   }
 
   def renderTodoList(todoList: TodoList): Html =
     // TODO: Call your template to render the todo list.
-    ???
+    views.html.todo(todoList)
 }
 
 trait TodoDataHelpers {
-  var todoList = TodoList(Seq(
-    Todo("Dishes", true),
+  var todoList: TodoList = TodoList(Seq(
+    Todo("Dishes", complete = true),
     Todo("Laundry"),
     Todo("World Domination")
   ))
