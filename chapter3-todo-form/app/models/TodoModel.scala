@@ -19,7 +19,7 @@ case class TodoList(items: Seq[Todo]) {
 
 case class Todo(id: Option[String], label: String, complete: Boolean) {
   def hasId(id: String): Boolean =
-    this.id == Some(id)
+    this.id.contains(id)
 
   def withId: Todo =
     this.copy(id = id orElse Some(Todo.randomId))
@@ -30,7 +30,7 @@ object Todo {
     java.util.UUID.randomUUID.toString
 
   val empty: Todo =
-    Todo(None, "", false)
+    Todo(None, "", complete = false)
 
   def apply(label: String, complete: Boolean = false): Todo =
     Todo(Some(randomId), label, complete)

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-@(todoList: TodoList)
-=======
 @(editForms: Seq[Form[models.Todo]], createForm: Form[models.Todo])(implicit messages: Messages)
->>>>>>> 964f402... Minimal changes to `chapter3-todo-form` to add I18N support
 
 @import models._
 
@@ -10,18 +6,14 @@
   <h2>My current todos</h2>
 
   <ul class="todo-list">
-  @for(item <- todoList.items) {
+  @for(editForm <- editForms) {
     <li class="todo-item">
-      <label>
-        <input type="checkbox" @if(item.complete) { checked }>
-        @item.label
-      </label>
+    @todoForm(editForm)
     </li>
   }
   </ul>
 
   <h2>Add a new todo</h2>
 
-   <!-- TODO: Add "create todo" form to template -->
-   <p>TODO: Add "create todo" form to template</p>
+  @todoForm(createForm)
 }
