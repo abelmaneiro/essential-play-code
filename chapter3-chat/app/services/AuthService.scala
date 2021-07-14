@@ -2,7 +2,6 @@ package services
 
 object AuthService {
   import services.AuthServiceMessages._
-  import services.ChatServiceMessages._
 
   private val passwords = Map[Username, Password](
     "alice"   -> "password1",
@@ -18,9 +17,8 @@ object AuthService {
         val sessionId = generateSessionId
         sessions += (sessionId -> request.username)
         LoginSuccess(sessionId)
-
-      case Some(user) => PasswordIncorrect(request.username)
-      case None       => UserNotFound(request.username)
+      case Some(_)  => PasswordIncorrect(request.username)
+      case None     => UserNotFound(request.username)
     }
   }
 

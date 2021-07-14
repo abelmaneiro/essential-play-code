@@ -1,0 +1,9 @@
+@(form: Form[services.AuthServiceMessages.LoginRequest])(implicit messages: Messages)
+
+@layout("Log In"){
+    @helper.form.apply(action = routes.AuthController.submitLogin) {
+        @helper.inputText.apply(form.apply("username"), '_label -> "Username", 'class -> "form-control")
+        @helper.inputPassword(form("password"), '_label -> "Password", 'class -> "form-control")
+        <button type="submit" class="btn btn-primary">OK</button>
+    }
+}

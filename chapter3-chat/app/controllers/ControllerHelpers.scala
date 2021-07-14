@@ -2,8 +2,6 @@ package controllers
 
 import play.api.mvc._
 
-import services._
-
 trait ControllerHelpers extends Results {
   implicit class RequestCookieOps(request: Request[AnyContent]) {
     def sessionCookieId: Option[String] =
@@ -11,7 +9,7 @@ trait ControllerHelpers extends Results {
   }
 
   implicit class ResultCookieOps(result: Result) {
-    def withSessionCookie(sessionId: String) =
+    def withSessionCookie(sessionId: String): Result =
       result.withCookies(Cookie("ChatAuth", sessionId))
   }
 }

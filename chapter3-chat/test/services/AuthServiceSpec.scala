@@ -1,9 +1,7 @@
 package services
 
-import org.scalatest._
 import org.scalatestplus.play._
-
-import AuthServiceMessages._
+import services.AuthServiceMessages._
 
 class AuthServiceSpec extends PlaySpec with OneAppPerTest {
   "login method" must {

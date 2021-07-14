@@ -1,0 +1,15 @@
+@(title: String)(content: => Html)
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>@title</title>
+    </head>
+    <body>
+        <h1>@title</h1>
+        <div>
+            <a href="@routes.AuthController.login">Log In</a>
+            <a href="@routes.ChatController.index">Chat</a>
+        </div>
+        @content
+    </body>
+</html>

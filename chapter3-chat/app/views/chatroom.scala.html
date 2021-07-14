@@ -1,0 +1,14 @@
+@(ChatMessages: Seq[services.ChatServiceMessages.Message], ChatForm: Form[ChatController.ChatRequest])(implicit messages: Messages)
+@layout("Chat Room"){
+    <ul>
+        @for(message <- ChatMessages){
+            <li>@message.author  @message.text</li>
+        }
+    </ul>
+    <div>
+        @helper.form.apply(action = routes.ChatController.submitMessage){
+            @helper.inputText(ChatForm.apply("chatText"), '_label -> "Write a message...", 'placeholder -> "Enter chat text")
+            <button type="submit">Submit</button>
+        }
+    </div>
+}
